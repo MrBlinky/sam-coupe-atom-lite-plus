@@ -1,0 +1,69 @@
+How to Initialize CF card using a Windows PC       
+--------------------------------------------
+
+To boot automaticaly from a CF card you need to have the
+AL-BOOTROM installed and a bootable CF card.
+Normally a bootable CF card is made by using the al-bdos disk
+But your SAM does not have a floppydrive or it's floppy drive
+is faulty the only way to make a CF-Card bootable at this time
+is to use SIMCOUPE with Atom Lite support and the latest 
+SAMDISK utility.
+
+STEP 1 Make card reconisable for Sim Coupe
+-------------------------------------------
+
+Insert your your CF card into your reader and then go to the
+command prompt and browse to the SAMDISK executable.
+
+To find the device number of your CF card reader type:
+
+SAMDISK LIST
+
+When you do not see your card reader then you can list all
+devices by typing:
+
+SAMDISK LIST -v
+
+Be very carefull which device you select and make sure you
+do not select a harddisk by accident. Note your cardreaders
+device number. In the following commands X represents your
+device number.
+
+To copy the bootsector to your CF card type:
+
+SAMDISK BOOTSECT.DAT X:0
+
+You will be prompted if you are sure. Press Y when you are
+and the bootsector is written.
+
+After this step you can and must copy a BDOS disk into first
+record so simcoupe reconizes the CF-Card as BDOS format.
+copy the bootrecord to CF card using:
+
+SAMDISK AL-BDOS.DSK X:1
+
+STEP 2 Make Card bootable
+-------------------------
+
+Start Simcoupe and go to Tools\Options.
+-On the Drives tab select Atom Lite for D2:
+-On Disk tab Select \\.\PhysicalDeviceX\
+-On System Tab Check Patch ROM for Atom HDD booting.
+-goto File\Open to select al-bdos.dsk
+-goto System and choose  reset to reset the system.
+ press F9 to boot from floppy image if neccesary.
+ Select Initialize card from menu and follow instructions.
+-To test you can boot from CF-card reset SimCoupe. 
+
+Notes:
+
+When you use Vista or Windows7 Make sure you run SAMDISK and
+SIM Coupe with administrative privileges.
+
+Don't assume your Card readers device number will always be the
+same number. The number might change when external harddrives,
+thumbdrives,other USB devices are plugged in. 
+
+The bootsector loads the DOS and splash screen from preset
+locations in record 1. When mixing different versions of
+bootsectors and bootimages. The CF-Card may not boot.

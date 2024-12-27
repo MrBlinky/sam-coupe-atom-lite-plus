@@ -1,0 +1,89 @@
+EQN2JED - Boolean Equations to JEDEC file assembler (Version V101)
+Copyright (c) National Semiconductor Corporation 1990-1993
+
+Log file for D:\WIP\ATOM-L~1\GAL\ALITE3.eqn
+Device: G22V10
+
+Pin   Label               Type
+---   -----               ----
+1     DISC2               pos,com input
+2     A2                  pos,com input
+3     BD4                 pos,com input
+4     BD3                 pos,com input
+5     BD2                 pos,com input
+6     BD1                 pos,com input
+7     BD0                 pos,com input
+8     RST                 pos,com input
+9     A1                  pos,com input
+10    A0                  pos,com input
+11    WR                  pos,com input
+12    GND                 ground pin
+13    NC1                 unused
+14    DCS                 neg,trst,com feedback
+15    WRL                 pos,trst,com feedback
+16    IORD                neg,trst,com output
+17    IOWR                neg,trst,com output
+18    CS1                 pos,trst,com feedback
+19    CS0                 pos,trst,com feedback
+20    BA2                 pos,trst,com feedback
+21    BA0                 pos,trst,com feedback
+22    BA1                 pos,trst,com feedback
+23    RDL                 pos,trst,com feedback
+24    VCC                 power pin
+
+EQN2JED - Boolean Equations to JEDEC file assembler (Version V101)
+Copyright (c) National Semiconductor Corporation 1990-1993
+
+Device Utilization:
+
+No of dedicated inputs used               : 11/12 (91.7%)
+No of feedbacks used as dedicated outputs :  2/10 (20.0%)
+No of feedbacks used                      :  8/10 (80.0%)
+
+		------------------------------------------
+		Pin   Label                 Terms Usage
+		------------------------------------------
+		23    RDL.oe                1/1   (100.0%)
+		23    RDL                   2/8   (25.0%)
+		22    BA1.oe                1/1   (100.0%)
+		22    BA1                   7/10  (70.0%)
+		21    BA0.oe                1/1   (100.0%)
+		21    BA0                   7/12  (58.3%)
+		20    BA2.oe                1/1   (100.0%)
+		20    BA2                   7/14  (50.0%)
+		19    CS0.oe                1/1   (100.0%)
+		19    CS0                   7/16  (43.8%)
+		18    CS1.oe                1/1   (100.0%)
+		18    CS1                   7/16  (43.8%)
+		17    IOWR.oe               1/1   (100.0%)
+		17    IOWR                  2/14  (14.3%)
+		16    IORD.oe               1/1   (100.0%)
+		16    IORD                  2/12  (16.7%)
+		15    WRL.oe                1/1   (100.0%)
+		15    WRL                   3/10  (30.0%)
+		14    DCS.oe                1/1   (100.0%)
+		14    DCS                   1/8   (12.5%)
+		------------------------------------------
+		Total Terms                55/132 (41.7%)
+		------------------------------------------
+
+EQN2JED - Boolean Equations to JEDEC file assembler (Version V101)
+Copyright (c) National Semiconductor Corporation 1990-1993
+
+                            Chip diagram (DIP)
+
+                             ._____    _____.
+                             |     \__/     |
+                       DISC2 |  1        24 | VCC
+                          A2 |  2        23 | RDL
+                         BD4 |  3        22 | BA1
+                         BD3 |  4        21 | BA0
+                         BD2 |  5        20 | BA2
+                         BD1 |  6        19 | CS0
+                         BD0 |  7        18 | CS1
+                         RST |  8        17 | IOWR
+                          A1 |  9        16 | IORD
+                          A0 | 10        15 | WRL
+                          WR | 11        14 | DCS
+                         GND | 12        13 | NC1
+                             |______________|

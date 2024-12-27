@@ -1,0 +1,15 @@
+Cards tested by Edwin
+---------------------
+Canon     FC -4M           4MB
+TwinMOS   Ultra-X 140x     256MB
+Unbranded Samsung Flash    2GB
+
+Cards tested by Steve
+---------------------
+Cannon	                   8MB
+Kodak	                   8MB
+Kodak                     16MB
+SanDisk	                  16MB
+Bytestor                  256MB
+Kingston                  2GB
+Play.com                  2GB

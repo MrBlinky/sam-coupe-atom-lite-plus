@@ -1,0 +1,48 @@
+AL-BDOS Notes
+
+FLOPPYDISK
+----------
+
+When booting AL-BDOS15a from floppydisk. AL-BDOS will boot from Card 1 only.
+Use the following to boot from Card 2 after the DOS is loaded:
+
+POKE DVAR 34,176 : CALL DVAR 35.
+
+AL-BOOTROM
+----------
+
+Once SAM is equiped with the AL-BOOTROM. An attempt is made to boot from any of the 4
+possible Cards starting with Card 1. The following key combinations are possible.
+
+0 Do not boot from any CF-Card. So the BOOT basic command can be used to boot from floppy disk.
+1..4 Boot from the corresponding Card number. Each CF-Card must have a valid boot sector and the
+Card must be in the selected card slot.
+
+When the CF-Card doesn't boot after powering on or reset. and it does have a valid bootsector and dos.
+Then hold the Reset button for two seconds or do a CALL 0.
+
+AL-BDOS
+-------
+
+hold down SYMBOL SHIFT to display the B-DOS information screen for as long as the key is depressed.
+to Skip loading of the AUTO* file hold down the CTRL key while dos is booting.
+
+To select a different card with B-DOS use :
+
+Card 1 POKE DVAR 34,160 : CALL DVAR 35 (AL+ Right Drive bay)
+Card 2 POKE DVAR 34,176 : CALL DVAR 35 (AL+ Right Drive bay)
+Card 3 POKE DVAR 34,161 : CALL DVAR 35 (AL+ Left Drive bay)
+Card 4 POKE DVAR 34,177 : CALL DVAR 35 (AL+ Left Drive bay)
+
+
+REM DETECT CARDS AND FETCH DEVICE PARAMETERS
+DIM CF$(4,40)
+LET FDD=IN &E1,SDV=PEEK DVAR 34, DIF=PEEK DVAR 38 : REM SourceDevice,Display BDOS Info Flag
+POKE DVAR 38,DIF BOR 128 :REM DISABLE BDOS INFO SCREEN
+FOR C=0 TO 3 : POKE DVAR 34,160+(C BAND 1)*16+(C BAND 2) DIV 2 : CALL DVAR 35
+IF PEEK DVAR 2 THEN LET CF$(C+1)=MEM$(DVAR 8 TO DVAR 29) ELSE LET cf$(C+1,2)=CHR$ 0
+NEXT C
+POKE DVAR 34,SDV:POKE DVAR 38,SDF :RESTORE BDOS INFO SCREEN
+
+DEFPROC CARD nr : POKE DVAR x,C$(nr)
+ENDPROC

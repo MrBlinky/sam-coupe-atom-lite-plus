@@ -1,0 +1,14 @@
+Latest Bootable disk containing the latest BDOS for the ALite(+)
+
+boots dos
+load splash
+load utility
+
+Utility
+Diagnostics
+format CF-card
+update boot files
+copy disk to record
+set clock
+reset
+goto basic

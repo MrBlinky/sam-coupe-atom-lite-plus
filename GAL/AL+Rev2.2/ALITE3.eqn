@@ -1,0 +1,122 @@
+; SAM Coupe Atom-Lite + Rev2 equations by Edwin Blink July 2007
+
+;IOMAP for alternative IO removed
+
+CHIP AL-Rev2 GAL22V10
+
+;---------------------------------------------------------------
+;Pin asignments
+;---------------------------------------------------------------
+
+DISC2  A2 BD4  BD3  BD2 BD1 BD0 RST  A1  A0  WR  GND
+NC1   DCS WRL IORD IOWR CS1 CS0 BA2 BA0 BA1 RDL VCC
+
+;Signature
+
+@UES AL+REV21
+
+;WRL also fucntions as Dallas Clock Latch enable (DAL in schematic)
+
+;---------------------------------------------------------------
+EQUATIONS
+;---------------------------------------------------------------
+
+; Create two transparent latches one for read and one for write.
+; Both latches are latched during the active low period of
+; /DISC2 to get clean signals.
+
+; IORD will get active low on a read of port F7h
+; IORD will also get active low on a read of port F6h when the
+; Dallas clock has not been selected (port F5h=&FDh).
+
+; IOWR will get active low on a write to port F7h
+; IOWR will also get active low on a write to port F6h when the
+; Dallas clock has not been selected (port F5h=&FDh).
+
+ RDL =  WR *  DISC2 *  A2 * A1 * DCS
+     + RDL * /DISC2 * DCS
+
+;WRL has a double function.
+;1) to act as a transparent latch for
+;2) IDE writes.
+     
+ WRL = /WR *  DISC2 *  A2 * A1 * DCS
+     + WRL * /DISC2 * DCS
+     + /WR * /DISC2 *  A2 * A1 * /A0 * /DCS
+     
+; Create the IDE read and write signals using the above latches
+
+/IORD = /DISC2 *    RDL *  DCS
+      +     WR * /DISC2 *   A2 * A1 * A0 * /DCS
+      
+/IOWR = /DISC2 *    WRL * DCS
+      +    /WR * /DISC2 *  A2 * A1 * A0 *  /DCS
+
+
+;change function of WRL to ALE when Dallas clock is selected 
+
+;---------------------------------------------------------------
+
+;A write to port F5h will copy D0..D4 into the IDE latches 
+;when the RST pin is low the IDE latches are preset to '1' 
+
+;IDE address latches
+
+  BA0  = /WR * /DISC2 *  A2 * /A1 * A0 * BD0
+       + BA0 * WR
+       + BA0 * DISC2
+       + BA0 * /A2
+       + BA0 * A1
+       + BA0 * /A0
+       + /RST
+       
+  BA1  = /WR * /DISC2 *  A2 * /A1 * A0 * BD1
+       + BA1 * WR
+       + BA1 * DISC2
+       + BA1 * /A2
+       + BA1 * A1
+       + BA1 * /A0 
+       + /RST
+       
+  BA2  = /WR * /DISC2 *  A2 * /A1 * A0 * BD2
+       + BA2 * WR
+       + BA2 * DISC2
+       + BA2 * /A2
+       + BA2 * A1
+       + BA2 * /A0 
+       + /RST
+
+;IDE command block latch
+       
+   CS0 = /WR * /DISC2 *  A2 * /A1 * A0 * BD3
+       + CS0 * WR
+       + CS0 * DISC2
+       + CS0 * /A2
+       + CS0 * A1
+       + CS0 * /A0
+       + /RST
+
+;IDE device control latch
+       
+   CS1 = /WR * /DISC2 *  A2 * /A1 * A0 * BD4
+       + CS1 *  WR
+       + CS1 *  DISC2
+       + CS1 * /A2
+       + CS1 *  A1
+       + CS1 * /A0
+       + /RST
+       
+;---------------------------------------------------------------
+;Dallas Clock 2 control
+;---------------------------------------------------------------
+
+;The dallas clock is selected on the IDE bus when the value FDh
+;is written to port F5h (both chipselect lines at the 8-bit IDE
+;bus are inactive). The clock register address is written to
+;port F6h and register data is read from or written to port F7h.
+
+;Dallas clock chip select
+
+  /DCS = CS1 * CS0 *  BA2 * /BA1 * BA0
+   
+;---------------------------------------------------------------
